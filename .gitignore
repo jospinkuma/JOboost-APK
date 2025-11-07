@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Cordova
+platforms/
+plugins/
+.cordova/
+
+# Android
+/android
+*.apk
+*.aab
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Build
+dist/
+build/
+
+# Temp files
+*.tmp
+*.temp

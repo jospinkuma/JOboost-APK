@@ -1,0 +1,28 @@
+{
+  "name": "joboost",
+  "displayName": "JOboost",
+  "version": "1.0.0",
+  "description": "JOboost - Platform d'affiliation et monétisation",
+  "main": "index.js",
+  "scripts": {
+    "build": "cordova build android",
+    "build:release": "cordova build android --release",
+    "build:debug": "cordova build android --debug",
+    "run": "cordova run android --device",
+    "run:emulator": "cordova run android --emulator",
+    "clean": "cordova clean android",
+    "prepare": "cordova prepare",
+    "requirements": "cordova requirements",
+    "ci": "npm install -g cordova && cordova platform add android && cordova build android --release"
+  },
+  "dependencies": {
+    "cordova-android": "^12.0.0"
+  },
+  "devDependencies": {},
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {}
+  }
+}

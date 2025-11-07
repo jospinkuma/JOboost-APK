@@ -1,0 +1,137 @@
+# 🎯 SETUP GITHUB EN 3 MIN
+
+## 1️⃣ Créer un Repository
+
+### Sur GitHub Web:
+- Go: https://github.com/new
+- Nom: `JOboost-APK`
+- Description: "Android APK for JOboost"
+- ✅ Public
+- Cliquer "Create repository"
+
+### Copier ce que GitHub te donne:
+```
+https://github.com/TON_USERNAME/JOboost-APK.git
+```
+
+---
+
+## 2️⃣ Pousser le code
+
+### Dans PowerShell:
+
+```powershell
+cd c:\xampp\htdocs\JOboost_APK
+
+# Config git (une fois)
+git config --global user.email "ton.email@gmail.com"
+git config --global user.name "Ton Nom"
+
+# Ajouter tous les fichiers
+git add .
+
+# Créer le premier commit
+git commit -m "Initial commit: JOboost APK project"
+
+# Ajouter le repository distant
+git remote add origin https://github.com/TON_USERNAME/JOboost-APK.git
+
+# Renommer la branche en main
+git branch -M main
+
+# Pousser vers GitHub
+git push -u origin main
+```
+
+---
+
+## 3️⃣ Vérifier le Build
+
+- Go: https://github.com/TON_USERNAME/JOboost-APK
+- Cliquer "Actions"
+- Tu dois voir "Build JOboost APK" en cours ou complété ✅
+
+**Attendre 10-15 minutes** (première compilation plus lente)
+
+---
+
+## 4️⃣ Télécharger l'APK
+
+Une fois ✅ (vert):
+
+1. Cliquer le workflow "Build JOboost APK"
+2. Scroller vers le bas → "Artifacts"
+3. Télécharger "JOboost-APK"
+4. Extraire le ZIP
+5. Tu auras:
+   - `app-debug.apk` ← Installe cette version!
+   - `app-release.apk` ← Pour Google Play
+
+---
+
+## 5️⃣ Installer sur téléphone
+
+### Option A: Via fichier
+1. Télécharger `app-debug.apk` depuis GitHub
+2. Envoyer vers téléphone
+3. Ouvrir avec "Gestionnaire de fichiers"
+4. Installer
+5. Lancer JOboost ✅
+
+### Option B: Via WhatsApp
+```
+Télécharger → Envoyer sur WhatsApp → Recevoir → Installer
+```
+
+---
+
+## ❓ SI ÇA BLOQUE
+
+### "repository not found"?
+- Vérifier l'URL du repository GitHub
+- Vérifier que tu es connecté à Internet
+
+### Le workflow n'apparaît pas?
+- Aller à: Actions → Workflows
+- Cliquer "Enable workflows"
+
+### Erreur lors du build?
+- Cliquer le workflow → Logs
+- Chercher l'erreur rouge
+- Renvoyer le message d'erreur pour aide
+
+---
+
+## ✅ CHECKLIST
+
+- [ ] Compte GitHub créé
+- [ ] Repository créé
+- [ ] Code poussé avec `git push`
+- [ ] Build s'exécute dans "Actions"
+- [ ] APK téléchargé
+- [ ] APK installé sur téléphone
+- [ ] App lancée ✅
+
+---
+
+## 🔄 PROCHAINES FOIS
+
+Pour mettre à jour:
+
+```powershell
+cd c:\xampp\htdocs\JOboost_APK
+
+# Faire des changements...
+
+git add .
+git commit -m "Mon message"
+git push
+# → Build automatique en 10-15 min
+```
+
+---
+
+## 🚀 LET'S GO!
+
+Dis-moi quand tu es prêt, je te guide pas à pas! 💪
+

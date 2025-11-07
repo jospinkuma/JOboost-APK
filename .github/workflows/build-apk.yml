@@ -1,0 +1,76 @@
+name: Build JOboost APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Setup Java JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 31
+
+    - name: Install Cordova
+      run: npm install -g cordova
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Create Cordova project structure
+      run: |
+        mkdir -p platforms
+        mkdir -p plugins
+
+    - name: Add Android platform
+      run: cordova platform add android@latest
+
+    - name: Build Android APK
+      run: cordova build android --release
+
+    - name: Upload APK as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: JOboost-APK
+        path: |
+          platforms/android/app/build/outputs/apk/release/app-release.apk
+          platforms/android/app/build/outputs/apk/debug/app-debug.apk
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          platforms/android/app/build/outputs/apk/release/app-release.apk
+          platforms/android/app/build/outputs/apk/debug/app-debug.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Comment on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '✅ APK compilé avec succès!\n\nTélécharge l\'APK depuis les "Artifacts" ci-dessus.'
+          })

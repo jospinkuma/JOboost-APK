@@ -27,18 +27,27 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Accept Android licenses
+      run: yes | sdkmanager --licenses || true
+
+    - name: Install Android SDK components
+      run: |
+        sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+
     - name: Install Cordova
-      run: npm install -g cordova@latest
+      run: npm install -g cordova@12
+
+    - name: Install Gradle
+      run: |
+        wget https://services.gradle.org/distributions/gradle-8.0-bin.zip
+        unzip -q gradle-8.0-bin.zip
+        echo \"\C:\JOboost_APK/gradle-8.0/bin\" >> \
 
     - name: Add Android platform
-      run: cordova platform add android@latest
+      run: cordova platform add android@12
 
     - name: Build APK (Debug)
-      run: cordova build android --debug
-
-    - name: Build APK (Release - unsigned)
-      run: cordova build android --release
-      continue-on-error: true
+      run: cordova build android --debug --verbose
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
@@ -46,11 +55,3 @@ jobs:
         name: JOboost-APK-debug
         path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
         if-no-files-found: error
-
-    - name: Upload Release APK
-      uses: actions/upload-artifact@v4
-      if: success()
-      with:
-        name: JOboost-APK-release
-        path: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
-        if-no-files-found: warn

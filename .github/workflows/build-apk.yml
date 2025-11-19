@@ -1,4 +1,4 @@
-﻿name: Build JOboost APK
+﻿name: Build JOboost APK with Capacitor
 
 on:
   push:
@@ -27,31 +27,35 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-    - name: Accept Android licenses
-      run: yes | sdkmanager --licenses || true
+    - name: Install dependencies
+      run: npm ci
 
-    - name: Install Android SDK components
-      run: |
-        sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+    - name: Copy web assets
+      run: npx cap copy android
 
-    - name: Install Cordova
-      run: npm install -g cordova@12
+    - name: Update Android project
+      run: npx cap update android
 
-    - name: Install Gradle
-      run: |
-        wget https://services.gradle.org/distributions/gradle-8.0-bin.zip
-        unzip -q gradle-8.0-bin.zip
-        echo \"\C:\JOboost_APK/gradle-8.0/bin\" >> \
-
-    - name: Add Android platform
-      run: cordova platform add android@12
-
-    - name: Build APK (Debug)
-      run: cordova build android --debug --verbose
+    - name: Build APK
+      working-directory: android
+      run: ./gradlew assembleDebug
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
-        name: JOboost-APK-debug
-        path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+        name: JOboost-APK
+        path: android/app/build/outputs/apk/debug/app-debug.apk
         if-no-files-found: error
+
+    - name: Build Release APK
+      working-directory: android
+      run: ./gradlew assembleRelease
+      continue-on-error: true
+
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: JOboost-APK-release
+        path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+        if-no-files-found: warn

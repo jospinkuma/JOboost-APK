@@ -16,9 +16,11 @@
     "ci": "npm install -g cordova && cordova platform add android && cordova build android --release"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
     "cordova-android": "^12.0.0"
   },
-  "devDependencies": {},
   "cordova": {
     "platforms": [
       "android"

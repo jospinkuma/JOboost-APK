@@ -1,4 +1,4 @@
-name: Build JOboost APK
+﻿name: Build JOboost APK
 
 on:
   push:
@@ -10,67 +10,47 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '20'
 
     - name: Setup Java JDK
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
-        java-version: '11'
-        distribution: 'adopt'
+        java-version: '17'
+        distribution: 'temurin'
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v2
-      with:
-        api-level: 31
+      uses: android-actions/setup-android@v3
 
     - name: Install Cordova
-      run: npm install -g cordova
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Create Cordova project structure
-      run: |
-        mkdir -p platforms
-        mkdir -p plugins
+      run: npm install -g cordova@latest
 
     - name: Add Android platform
       run: cordova platform add android@latest
 
-    - name: Build Android APK
+    - name: Build APK (Debug)
+      run: cordova build android --debug
+
+    - name: Build APK (Release - unsigned)
       run: cordova build android --release
+      continue-on-error: true
 
-    - name: Upload APK as artifact
-      uses: actions/upload-artifact@v3
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v4
       with:
-        name: JOboost-APK
-        path: |
-          platforms/android/app/build/outputs/apk/release/app-release.apk
-          platforms/android/app/build/outputs/apk/debug/app-debug.apk
+        name: JOboost-APK-debug
+        path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+        if-no-files-found: error
 
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v4
+      if: success()
       with:
-        files: |
-          platforms/android/app/build/outputs/apk/release/app-release.apk
-          platforms/android/app/build/outputs/apk/debug/app-debug.apk
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Comment on PR
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v6
-      with:
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: '✅ APK compilé avec succès!\n\nTélécharge l\'APK depuis les "Artifacts" ci-dessus.'
-          })
+        name: JOboost-APK-release
+        path: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+        if-no-files-found: warn

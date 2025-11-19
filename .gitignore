@@ -1,3 +1,34 @@
+﻿# ========================================
+# SÉCURITÉ - CODE SOURCE PROTÉGÉ
+# ========================================
+# Ce fichier empêche la publication du code source PHP
+
+# CODE SOURCE PHP - NE JAMAIS PUBLIER
+*.php
+config.php
+database.php
+.env
+.env.*
+
+# DONNÉES SENSIBLES
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+backups/
+database/
+data/
+
+# MOTS DE PASSE & CLÉS
+*.key
+*.pem
+*.p12
+secrets/
+credentials/
+
+# ========================================
+# CORDOVA & BUILD
+# ========================================
 # Dependencies
 node_modules/
 package-lock.json
@@ -13,6 +44,14 @@ plugins/
 *.apk
 *.aab
 
+# Build outputs
+dist/
+build/
+out/
+
+# ========================================
+# DÉVELOPPEMENT
+# ========================================
 # IDE
 .vscode/
 .idea/
@@ -25,10 +64,12 @@ plugins/
 Thumbs.db
 *.log
 
-# Build
-dist/
-build/
-
 # Temp files
 *.tmp
 *.temp
+*.cache
+
+# Test files
+test/
+tests/
+coverage/
